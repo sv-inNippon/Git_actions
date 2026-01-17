@@ -1,36 +1,36 @@
 name: CI Pipeline
 
 on:
-  push:
+  push:        # запуск при каждом пуше
     branches: [ "main" ]
-  workflow_dispatch:
+  workflow_dispatch:   # запуск вручную
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-latest   # ОС для выполнения
 
     steps:
-    - name: Checkout repository
-      uses: actions/checkout@v4
+      - name: Checkout repository
+        uses: actions/checkout@v3
 
-    - name: Install Node.js
-      uses: actions/setup-node@v4
-      with:
-        node-version: 18
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
 
-    - name: Install dependencies
-      run: npm install
+      - name: Install dependencies
+        run: npm install
 
-    - name: Build project
-      run: npm run build
+      - name: Build project
+        run: npm run build
 
-    - name: Run unit tests
-      run: npm test
+      - name: Run unit tests
+        run: npm test
 
-    - name: Commit updated code
-      run: |
-        git config --global user.name "github-actions[bot]"
-        git config --global user.email "github-actions[bot]@users.noreply.github.com"
-        git add .
-        git commit -m "CI: auto-update build artifacts" || echo "No changes"
-        git push
+      - name: Commit & push changes
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git add .
+          git commit -m "CI: update build artifacts"
+          git push
